@@ -8,7 +8,7 @@ crossterm = "0.29.0"
 ratatui = "0.30.0"
 log = "0.4.29"
 simplelog = "0.12.2"
-derive_more = "2.1.1"
+derive_more = {version = "2.1.1", features = ["from"]}
 
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]
