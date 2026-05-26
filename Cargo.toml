@@ -4,10 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-bevy_ecs = "0.18.1"
-log = "0.4.29"
+crossterm = "0.29.0"
 ratatui = "0.30.0"
+log = "0.4.29"
 simplelog = "0.12.2"
+derive_more = "2.1.1"
 
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]

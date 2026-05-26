@@ -1,0 +1,45 @@
+events for entities to respond to/deal with
+	onBump
+	onEnter
+	onInteract
+	onSight
+	onHit
+	onDeath
+	
+
+components I want in the future:
+	Dialogue
+	QuestStatus
+	Opinion(on faction)
+	Inventory
+	Sight
+	Hearing
+
+
+
+program structure
+
+entrypoint
+	initializes the game layer
+	starts the ui layer with a reference to the game layer
+
+ui layer
+	app // controller
+	views
+		menus
+		game screen
+			inventory popup
+			dialogue popup
+			map view
+			hud
+			
+
+
+game layer
+	is the model
+	bevy wrapper
+	custom components
+	custom systems
+	algorithms
+
+engine layer <-- bevy
