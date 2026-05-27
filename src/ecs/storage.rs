@@ -100,7 +100,23 @@ impl ComponentStorage {
         Ok(())
     }
 
-    pub fn borrow_component_vec<ComponentType: 'static + Component>(
+    pub fn get_component_iter<ComponentType: 'static + Component>(&self) -> Option<impl Iterator<Item = (Entity, Option<&ComponentType>)>> {
+        let entity_components = self.borrow_component_vec::<ComponentType>()?
+            .iter()
+            .enumerate()
+            .map(|(index, comp)| (Entity {index}, comp.as_ref()));
+        Some(entity_components)
+    }
+
+    pub fn get_component_iter_mut<ComponentType: 'static + Component>(&mut self) -> Option<impl Iterator<Item = (Entity, Option<&mut ComponentType>)>> {
+        let entity_components = self.borrow_component_vec_mut::<ComponentType>()?
+            .iter_mut()
+            .enumerate()
+            .map(|(index, comp)| (Entity {index}, comp.as_mut()));
+        Some(entity_components)
+    }
+
+    fn borrow_component_vec<ComponentType: 'static + Component>(
         &self,
     ) -> Option<&Vec<Option<ComponentType>>> {
         self.components
@@ -108,7 +124,7 @@ impl ComponentStorage {
             .find_map(|vec| vec.as_any().downcast_ref::<Vec<Option<ComponentType>>>())
     }
 
-    pub fn borrow_component_vec_mut<ComponentType: 'static + Component>(
+    fn borrow_component_vec_mut<ComponentType: 'static + Component>(
         &mut self,
     ) -> Option<&mut Vec<Option<ComponentType>>> {
         self.components
