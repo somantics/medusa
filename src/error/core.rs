@@ -1,3 +1,5 @@
+
+
 use derive_more::derive::From;
 
 pub type Result<T> = core::result::Result<T, Error>;
@@ -38,3 +40,9 @@ impl std::fmt::Display for Error {
 }
 
 impl std::error::Error for Error {}
+
+impl Into<std::io::Error> for Error {
+    fn into(self) -> std::io::Error {
+        std::io::Error::new(std::io::ErrorKind::Other, self)
+    }
+}

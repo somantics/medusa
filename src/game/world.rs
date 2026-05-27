@@ -3,6 +3,7 @@
 use crate::ecs::storage::{Component, ComponentStorage, Entity};
 use crate::error::core::Result;
 
+#[derive(Debug, Default)]
 pub struct World {
     size: Size,
     current_player: Entity,
@@ -10,6 +11,15 @@ pub struct World {
 }
 
 impl World {
+    pub fn spawn_test_room(&mut self) -> Result<()> {
+        for x in 0..self.size.x {
+            for y in 0..self.size.y {
+                self.spawn_floor(Position { x, y })?;
+            }
+        };
+        Ok(())
+    }
+
     pub fn spawn_player(&mut self) -> Result<()> {
         let player = self.spawn();
         self.add_core_components(player, Position {x: 10, y: 5}, '@', Some(DisplayLayer::Unit))?;

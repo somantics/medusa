@@ -3,6 +3,7 @@ use std::{any::Any, ops::{Index, IndexMut}};
 
 use crate::error::core::Result;
 
+#[derive(Debug, Default)]
 pub struct ComponentStorage {
     entity_count: usize,
     components: Vec<Box<dyn ComponentVec>>
@@ -155,7 +156,7 @@ impl ComponentStorage {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct Entity { index: usize }
 
 impl From<Entity> for usize {
@@ -178,9 +179,10 @@ impl<T> IndexMut<Entity> for Vec<T> {
     }
 }
 
-pub trait Component: Any {}
+pub trait Component: Any + std::fmt::Debug {}
 
-trait ComponentVec {
+
+trait ComponentVec: std::fmt::Debug {
     fn push_none(&mut self);
     fn set_none(&mut self, entity: Entity);
     fn as_any(&self) -> &dyn std::any::Any;

@@ -4,11 +4,14 @@ use ratatui::{
     DefaultTerminal, Frame, buffer::Buffer, layout::Rect, style::Stylize, symbols::border, text::{Line, Span, Text}, widgets::{Block, Paragraph, Widget}
 };
 
+use crate::game::world::World;
+
 
 
 #[derive(Debug, Default)]
 pub struct App {
-    exit: bool
+    exit: bool,
+    world: World,
 }
 
 impl App {
@@ -17,6 +20,8 @@ impl App {
     }
 
     pub fn run(&mut self, terminal: &mut DefaultTerminal) -> std::io::Result<()> {
+        self.world.spawn_test_room();
+        self.world.spawn_player();
         while !self.exit {
             terminal.draw(|frame| self.draw(frame))?;
             self.handle_events()?;
