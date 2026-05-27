@@ -1,10 +1,10 @@
 
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
-    DefaultTerminal, Frame, buffer::Buffer, layout::Rect, style::Stylize, symbols::border, text::{Line, Span, Text}, widgets::{Block, Paragraph, Widget}
+    DefaultTerminal, Frame, buffer::Buffer, layout::Rect, style::Stylize, symbols::border, text::{Line, Span, Text, ToSpan}, widgets::{Block, Paragraph, Widget}
 };
 
-use crate::game::world::World;
+use crate::game::world::{Size, World};
 
 
 
@@ -20,6 +20,7 @@ impl App {
     }
 
     pub fn run(&mut self, terminal: &mut DefaultTerminal) -> std::io::Result<()> {
+        self.world.size = Size {x: 55, y: 10};
         self.world.spawn_test_room();
         self.world.spawn_player();
         while !self.exit {
@@ -74,9 +75,23 @@ impl Widget for &App {
             .title(title.centered())
             .title_bottom(instructions.centered())
             .border_set(border::THICK);
+        
+        let mut text = Text::raw("Map goes here");
+        if let Some(game_map) = self.world.get_map() {
+            let mut span_vecs = vec![vec![Span::raw(" "); self.world.size.x]; self.world.size.y];
+            for (char, pos, _) in game_map {
+                span_vecs[pos.y][pos.x] = Span::raw(String::from(char));
+            }
+
+            text = Text::from(span_vecs
+                .into_iter()
+                .map(|l| Line::from(l))
+                .collect::<Vec<_>>());
+
+        }
 
 
-        Paragraph::new("Map goes here")
+        Paragraph::new(text)
             .centered()
             .block(block)
             .render(area, buf);

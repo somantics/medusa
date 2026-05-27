@@ -5,7 +5,7 @@ use crate::error::core::Result;
 
 #[derive(Debug, Default)]
 pub struct World {
-    size: Size,
+    pub size: Size,
     current_player: Entity,
     components: ComponentStorage,
 }
